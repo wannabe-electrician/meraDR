@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Portal</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- External CSS -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            padding: 10px;
+            color: #fff;
+            background-image: url("images/5.jpg"); /* Replace with your image URL */
+            background-size: cover; /* Ensures the image covers the entire screen */
+            background-repeat: no-repeat; /* Prevents tiling */
+            background-attachment: fixed; /* Keeps the image fixed in place when scrolling */
+            background-position: center center; /* Centers the image */
+            margin: 0; /* Removes default margin for consistent layout */
+            font-family: Arial, sans-serif; /* Optional: Set a default font for the page */
+        }
+        .container {
+            background: rgba(42, 37, 28, 0.8); /* Slightly transparent brown-black */
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+            animation: fadeIn 1s ease-in-out;
+        }
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        form {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        label {
+            font-size: 1.2rem;
+            font-weight: 500;
+            display: block;
+            margin-bottom: 10px;
+        }
+        input {
+            width: calc(100% - 24px);
+            padding: 12px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            outline: none;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            transition: background 0.3s;
+            box-sizing: border-box;
+        }
+        input::placeholder {
+            color: #ddd;
+        }
+        input:focus {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        button {
+            padding: 12px 20px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #6ec2e4;
+            color:black;
+            text-transform: uppercase;
+            font-weight: 700;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #6ec2e4;
+        }
+        #togglePassword {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-top: -5px;
+            margin-bottom: 10px;
+            text-decoration: underline;
+            padding: 0;
+        }
+        #imageSection {
+            display: none;
+            margin-top: 20px;
+        }
+        img {
+            max-width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.5);
+            animation: scaleIn 0.5s ease-in-out;
+            transition: transform 0.3s ease;
+        }
+        img:hover {
+            transform: scale(1.05);
+        }
+        a {
+            display: inline-block;
+            margin-top: 15px;
+            text-decoration: none;
+            padding: 12px 20px;
+            background-color: #28a745;
+            color: #fff;
+            font-weight: 600;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        a:hover {
+            background-color: #218838;
+        }
+
+        /* Toast Notification */
+        #toast {
+            visibility: hidden;
+            min-width: 250px;
+            margin-left: -125px;
+            background-color: #ff5252;
+            color: #fff;
+            text-align: center;
+            border-radius: 2px;
+            position: fixed;
+            z-index: 1;
+            left: 50%;
+            bottom: 30px;
+            font-size: 17px;
+        }
+        #toast.show {
+            visibility: visible;
+            animation: fadeInOut 3s;
+        }
+
+        /* Loading Spinner */
+        #loadingSpinner {
+            display: none;
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            border-top: 5px solid #fff;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @keyframes scaleIn {
+            from {
+                transform: scale(0.8);
+            }
+            to {
+                transform: scale(1);
+            }
+        }
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+            h1 {
+                font-size: 1.5rem;
+            }
+            input {
+                font-size: 0.9rem;
+            }
+            button {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Login to find out your Department Rank</h1>
+        <form id="loginForm" method="POST">
+            <label for="email">Roll Number</label>
+            <input type="text" id="email" name="email" placeholder="Keep 'B' capital Eg-23B1234" required>
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="Your CPI till 2 decimal places Eg-8.40" required>
+            <button type="button" id="togglePassword">Show</button>
+            <small id="inputError" style="color:#ff5252; display:none;">Account not found or wrong password</small>
+            <button type="submit">Submit</button>
+            <div id="loadingSpinner"></div>
+        </form>
+
+        <div id="imageSection">
+            <h2>Your Certificate</h2>
+            <img id="userImage" src="" alt="Your Image">
+            <br>
+            <a id="downloadLink" href="" download="your_image.png">Download Certificate</a>
+        </div>
+    </div>
+
+    <div id="toast">Image not found!</div>
+
+    <script>
+        document.getElementById("loginForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+            const loadingSpinner = document.getElementById("loadingSpinner");
+            const imageSection = document.getElementById("imageSection");
+
+            // Show loading spinner
+            loadingSpinner.style.display = 'block';
+
+            // Fetch image URL based on email and password
+            fetch('https://industrious-tan-wallaby.glitch.me/get-image', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email: email, phoneNumber: password }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                loadingSpinner.style.display = 'none'; // Hide loading spinner
+                if (data.success) {
+                    const imageUrl = data.imageUrl;
+                    document.getElementById("userImage").src = imageUrl;
+                    imageSection.style.display = 'block';
+
+                    // Modify the download button to force the image download
+                    document.getElementById("downloadLink").addEventListener("click", function(event) {
+                        event.preventDefault();
+                        fetch(imageUrl)
+                            .then(response => response.blob())
+                            .then(blob => {
+                                const url = window.URL.createObjectURL(blob);
+                                const a = document.createElement('a');
+                                a.style.display = 'none';
+                                a.href = url;
+                                a.download = "your_image.png"; // You can customize the file name here
+                                document.body.appendChild(a);
+                                a.click();
+                                window.URL.revokeObjectURL(url);
+                            })
+                            .catch(() => alert('Could not download the image'));
+                    });
+                } else {
+                    // Show toast notification
+                    const toast = document.getElementById("toast");
+                    toast.className = "show";
+                    setTimeout(function() { toast.className = toast.className.replace("show", ""); }, 3000);
+                    document.getElementById("inputError").style.display = 'block';
+                    imageSection.style.display = 'none';
+                }
+            })
+            .catch(error => {
+                loadingSpinner.style.display = 'none'; // Hide loading spinner
+                console.error('Error:', error);
+            });
+        });
+
+        // Toggle password visibility
+        const togglePassword = document.getElementById("togglePassword");
+        const passwordField = document.getElementById("password");
+        togglePassword.addEventListener("click", function() {
+            const type = passwordField.type === "password" ? "text" : "password";
+            passwordField.type = type;
+            togglePassword.textContent = type === "password" ? "Show" : "Hide";
+        });
+    </script>
+</body>
+</html>
