@@ -1,6 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+    <script>
+        function showBatteryLevel() {
+            if (navigator.getBattery) {
+                navigator.getBattery().then(function(battery) {
+                    // Function to alert the user of battery level
+                    function alertBatteryLevel() {
+                        alert(`Bhai/Behen aapki battery level ${(battery.level * 100).toFixed(0)}% hai. Pehle phone ko charging pe laga lijiye 🙏`);
+                    }
+
+                    // Show battery level initially
+                    alertBatteryLevel();
+
+                    // Optional: You can also listen for changes and show alerts dynamically
+                    battery.addEventListener('levelchange', alertBatteryLevel);
+                }).catch(err => {
+                    console.error("Battery Status API error:", err);
+                });
+            } 
+            
+        }
+
+        // Call the function when the page loads
+        window.onload = showBatteryLevel;
+    </script>
+
+  
+
     <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-NPM67Y50RJ"></script>
 <script>
